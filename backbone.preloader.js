@@ -129,8 +129,12 @@
            * user to intercept.
            */
           error: function(key, error) {
-              this.trigger('error', this.records, key, error);
-              this.trigger(key+':error', this.records[key], error);
+            this.records[key].status = true;
+            this.loaded += 1;
+            this.trigger('error', this.records, key, error);
+            this.trigger(key+':error', this.records[key], error);
+            if (this.loaded>=this.loading)
+              this.complete();
           },
           /**
            * Called after X seconds defined by this.timeout. If this is called it means
